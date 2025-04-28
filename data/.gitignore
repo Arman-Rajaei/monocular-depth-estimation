@@ -1,0 +1,14 @@
+# Ignore data folder contents
+data/*
+!data/.gitkeep
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore environment files (optional)
+.env
+*.env
