@@ -7,7 +7,19 @@ It is designed for fast experimentation, demonstration of 3D vision, and deep le
 
 ## 🚀 Project Structure
 
-monocular-depth-estimation/ ├── data/ # Dataset folder (kept empty here; see below) ├── models/ │ └── depth_cnn.py # Simple CNN model for depth prediction ├── notebooks/ │ └── 01_load_data_and_visualize.ipynb # Data loading and training code ├── utils/ │ └── dataset.py # Custom PyTorch Dataset class ├── view_sample_image.py # Script to visualize images outside Jupyter ├── create_tiny_subset.py # Script to create a tiny dataset subset ├── requirements.txt # Python dependencies ├── README.md # Project description and instructions └── .gitignore # Files to ignore when pushing to GitHub
+monocular-depth-estimation/  
+├── data/                          # Dataset folder (kept empty here; see below)  
+├── models/  
+│   └── depth_cnn.py              # Simple CNN model for depth prediction  
+├── notebooks/  
+│   └── 01_load_data_and_visualize.ipynb  # Data loading and training code  
+├── utils/  
+│   └── dataset.py                # Custom PyTorch Dataset class  
+├── view_sample_image.py          # Script to visualize images outside Jupyter  
+├── create_tiny_subset.py         # Script to create a tiny dataset subset  
+├── requirements.txt              # Python dependencies  
+├── README.md                     # Project description and instructions  
+└── .gitignore                    # Files to ignore when pushing to GitHub
 
 ---
 
@@ -59,6 +71,14 @@ monocular-depth-estimation/ ├── data/ # Dataset folder (kept empty here; s
 
 - The model output is a single-channel depth map corresponding to input RGB images.
 - Since this is a demonstration, the loss decreases steadily during training.
+
+---
+
+## 📷 Sample Visualization
+
+Here are a few input images from the KITTI dataset used during training:
+
+![KITTI Sample Images](docs/sample_images.png)
 
 ---
 
