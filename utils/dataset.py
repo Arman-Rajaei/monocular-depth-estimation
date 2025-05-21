@@ -1,41 +1,43 @@
 import os
 import glob
-from torch.utils.data import Dataset
-import cv2
+from PIL import Image
 import torch
+from torch.utils.data import Dataset
+import torchvision.transforms as T
 
 class KITTITinyDataset(Dataset):
-    def __init__(self, root_dir, transform=None):
-        """
-        Args:
-            root_dir (string): Directory with all the images.
-            transform (callable, optional): Optional transform to be applied
-                on a sample.
-        """
-        self.root_dir = root_dir
-        self.transform = transform
-        self.image_paths = sorted(glob.glob(os.path.join(root_dir, "*.png")))
+    def __init__(self, image_root, depth_root, transform=None):
+        # Load all paths
+        all_image_paths = sorted(glob.glob(os.path.join(image_root, "*.png")))
+        all_depth_paths = sorted(glob.glob(os.path.join(depth_root, "*.png")))
+
+        # Only use as many RGB images as depth maps, starting from the 5th
+        offset = 5
+        num_pairs = min(len(all_depth_paths), len(all_image_paths) - offset)
+
+        self.image_paths = all_image_paths[offset:offset + num_pairs]
+        self.depth_paths = all_depth_paths[:num_pairs]
+
+        print(f"📸 Total RGB images before slicing: {len(all_image_paths)}")
+        print(f"💡 Using {len(self.image_paths)} RGB images starting from index {offset}")
+        print(f"🌊 Using {len(self.depth_paths)} depth maps")
+        
+        assert len(self.image_paths) == len(self.depth_paths), \
+            "Mismatch between number of RGB images and depth maps"
+
+        self.transform = transform or T.Compose([
+            T.Resize((128, 416)),
+            T.ToTensor()
+        ])
 
     def __len__(self):
         return len(self.image_paths)
 
     def __getitem__(self, idx):
-        img_path = self.image_paths[idx]
-        
-        # Load the image
-        image = cv2.imread(img_path)
-        if image is None:
-            raise ValueError(f"Image not found at {img_path}")
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        
-        # 🚨 New: Resize to fixed size
-        image = cv2.resize(image, (416, 128))  # (width=416, height=128)
+        image = Image.open(self.image_paths[idx]).convert("RGB")
+        depth = Image.open(self.depth_paths[idx])
 
-        # Convert to tensor
-        image = torch.from_numpy(image).permute(2, 0, 1).float() / 255.0  # Normalize between 0 and 1
-        
-        if self.transform:
-            image = self.transform(image)
-        
-        return image
+        image = self.transform(image)
+        depth = self.transform(depth) / 256.0  # Convert from 0–65535 to meters
 
+        return image, depth
