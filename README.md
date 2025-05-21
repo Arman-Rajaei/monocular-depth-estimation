@@ -5,7 +5,7 @@ This project implements a convolutional neural network (CNN) for monocular depth
 
 This diagram illustrates the model's transformation of a single RGB image into a metrically meaningful depth map:
 
-![Depth Estimation Flow](docs/Image.png)
+
 ---
 
 ## 🚀 Project Structure
