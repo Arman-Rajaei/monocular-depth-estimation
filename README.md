@@ -1,7 +1,6 @@
 # Monocular Depth Estimation Using Deep Learning
 
-This project demonstrates a simple Convolutional Neural Network (CNN) for monocular depth estimation using a small subset of the KITTI dataset.  
-It is designed for fast experimentation, demonstration of 3D vision, and deep learning pipelines.
+This project implements a convolutional neural network (CNN) for monocular depth estimation using the KITTI dataset. The model is trained to predict a per-pixel depth map from a single RGB image. Ground truth depth maps are derived from LiDAR data collected by a Velodyne scanner and projected onto the image plane using camera calibration. These maps are encoded as 16-bit grayscale images, where each pixel value represents depth in meters scaled by a factor of 256. During training, the model learns to associate visual cues in RGB images (such as texture, size, and perspective) with real-world distance. At inference time, the trained model takes a new RGB image and outputs a single-channel grayscale depth map, which can be converted to metric depth (in meters) by dividing pixel values by 256. This setup enables pixel-wise 3D scene understanding from a single camera frame.
 
 ---
 
